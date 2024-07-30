@@ -18,8 +18,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r ./.replit/requirements.txt
+          pip install requests pandas
 
       - name: Run script
         run: |
-          python ./.replit/main.py
+          python main.py
