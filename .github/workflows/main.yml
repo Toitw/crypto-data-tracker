@@ -16,6 +16,13 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: Cache crypto data
+        id: cache-crypto-data
+        uses: actions/cache@v3
+        with:
+          path: crypto_data.csv
+          key: ${{ runner.os }}-crypto-data
+
       - name: Install dependencies
         run: |
           pip install requests pandas
@@ -24,7 +31,7 @@ jobs:
         run: |
           python main.py
 
-      - name: Upload CSV file
+      - name: Upload Update crypto data
         uses: actions/upload-artifact@v4
         with:
           name: crypto-data
