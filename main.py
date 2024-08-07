@@ -1,6 +1,6 @@
 import requests
 import pandas as pd
-import time
+import os
 from datetime import datetime
 
 # Función para obtener el Crypto Fear and Greed Index
@@ -40,24 +40,16 @@ def collect_and_save_data():
         'fear_and_greed_classification': fear_and_greed['value_classification']
     }
     for crypto in cryptos:
-        data[f'{crypto}_price'] = prices[crypto]['usd']
+        data[f'{crypto}_price'] = round(prices[crypto]['usd'], 2)
 
     # Crear un DataFrame a partir del diccionario
     df = pd.DataFrame([data])
 
     # Guardar los datos en el archivo CSV
-    try:
+    if os.path.exists(file_name):
         existing_df = pd.read_csv(file_name)
-        if not existing_df.empty and existing_df.iloc[-1]['timestamp'] == timestamp:
-            # Si ya existe una fila con el mismo timestamp, no hacer nada
-            print("Datos ya almacenados para este timestamp.")
-            return
         df = pd.concat([existing_df, df], ignore_index=True)
-    except FileNotFoundError:
-        # El archivo no existe, se crea uno nuevo
-        pass
 
-    # Guardar los datos actualizados en el archivo CSV
     df.to_csv(file_name, index=False)
 
     # Imprimir un mensaje de éxito
