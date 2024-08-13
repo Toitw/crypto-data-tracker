@@ -16,12 +16,11 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Cache crypto data
-        id: cache-crypto-data
-        uses: actions/cache@v3
+      - name: Download previous data (if any)
+        uses: actions/download-artifact@v4
         with:
-          path: crypto_data.csv
-          key: ${{ runner.os }}-crypto-data
+          name: crypto-data
+        continue-on-error: true  # Continúa incluso si no encuentra un artifact
 
       - name: Install dependencies
         run: |
